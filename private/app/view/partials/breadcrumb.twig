@@ -1,0 +1,15 @@
+{% block breadcrumb %}
+	{% if breadcrumb is defined %}
+		{% if breadcrumb|length > 0 %}
+			<ol class="breadcrumb">
+				{% for key,value in breadcrumb %}	
+					{% if loop.last %}
+						<li class="active">{{ value.label }}</li>
+					{% else %}
+						<li><a href="{{ path(value.route_name, value.route_params) }}">{{ value.label }}</a></li>
+					{% endif %}			
+				{% endfor %} 
+			</ol>
+		{% endif %}
+	{% endif %}
+{% endblock breadcrumb %}

@@ -1,0 +1,64 @@
+<IfModule mod_rewrite.c>
+	Options -MultiViews
+	
+	RewriteEngine On
+	<IfDefine !dev>
+		RewriteBase /
+	</IfDefine>
+		
+	# Apache >= 2.2.16	
+	FallbackResource index.php
+	
+	# Redirect non-www to www
+	# RewriteCond %{HTTP_HOST} !^www\.
+	# RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+	
+	# Redirect www to non-www:
+	# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+	# RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+	
+	# Apache > 2.4	
+	# http://stackoverflow.com/a/26155102
+	#<If "%{HTTPS} == 'on'">
+	#<If "%{HTTP_HOST} == 'admin.domain.tld'">
+		RewriteCond %{HTTP_HOST} ^admin\.domain\.tld [NC]
+		RewriteCond %{HTTPS} !=on
+		RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+	#</If>
+	
+	# Redirect Trailing Slashes...
+	RewriteRule ^(.*)/$ $1 [L,R=301]
+	
+	# Filename-based cache busting
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.+)\.(\d+)\.(js|css|png|jpe?g|gif)$ $1.$3 [L]
+	
+	# php-cgi under Apache does not pass HTTP Basic user/pass to PHP by default
+	# https://github.com/symfony/symfony/issues/1813
+	# https://github.com/symfony/symfony/blob/4532320a1117491efbffc0023ac5ca09f18d7b5a/ServerBag.php
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+	
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# http://karim-ouda.blogspot.it/2013/04/htaccess-rewrite-before-authentication.html
+<FilesMatch ".">
+	<IfModule mod_authn_file.c>
+	AuthName "Server Dashboard"
+	AuthType Basic
+	
+	<IfDefine dev>
+		AuthUserFile 	/var/www/private/htauth/.htpasswd
+		AuthGroupFile /var/www/private/htauth/.htgroup
+	</IfDefine>
+	<IfDefine !dev>
+		AuthUserFile 	/var/www/private/htauth/.htpasswd
+		AuthGroupFile /var/www/private/htauth/.htgroup
+	</IfDefine>
+	</IfModule>
+	
+	<Limit GET POST>
+		require group superadmin
+	</Limit>
+</FilesMatch>

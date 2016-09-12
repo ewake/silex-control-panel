@@ -1,0 +1,7 @@
+<script>
+	var request = new XMLHttpRequest();
+	request.open("get", "welcome", false, "false", "false");
+	request.send();
+	{#window.location.replace("{{ app.request.baseurl }}");#}
+	window.location.replace("{{ path('home', {'_locale': null}) }}");
+</script>

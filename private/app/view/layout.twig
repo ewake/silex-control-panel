@@ -1,0 +1,147 @@
+<!doctype html>
+<html class="no-js {{ html_class|default(['section'])|join(' ') }}" lang="{{ app.locale|e }}">
+	<head>
+    <meta charset="utf-8">
+    <title>{% if meta_title is defined %}
+    	{{ meta_title }} - {{ app.config_app_name }}
+    {% else %}
+    	{{ app.config_app_name }}
+    {% endif %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ meta_descr|default('')|e }}">
+    <meta name="keywords" content="{{ meta_keywd|default('')|e }}">
+    <meta name="author" content="{{ app.config_credits_name|e }}">
+
+ 		{% use "partials/stylesheets.twig" %}   
+    {% block stylesheets %}
+    	{{ parent() }}
+    {% endblock stylesheets %}
+    
+    {% use "partials/javascripts_top.twig" %}
+		{% block javascripts_top %}
+			{{ parent() }}
+    {% endblock javascripts_top %}
+
+    {#<link rel="shortcut icon" href="{{ asset('assets/img/favicon/favicon.ico') }}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ asset('assets/img/favicon/apple-touch-icon-114-precomposed.png') }}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ asset('assets/img/favicon/apple-touch-icon-72-precomposed.png') }}">
+    <link rel="apple-touch-icon-precomposed" href="{{ asset('assets/img/favicon/apple-touch-icon-57-precomposed.png') }}">#}
+  </head>
+  <body>
+
+  	{% block container %}    
+  	<div class="container">
+  	
+  		{% block header %}
+  		<header>
+  			
+  			<div class="row">
+  			
+  				<div id="header-left" class="col-md-6">
+  				
+		  			<h1>
+		  				<a class="logo" href="{{ path('home', {'_locale': null}) }}">
+		  					<img class="img-responsive" src="//static.ewake.it/img/logo-md.png" alt="">
+		  				</a>
+		  			</h1>
+		  		
+		  		</div>
+		  		
+		  		<div id="header-right" class="col-md-6">
+  		
+  					{% use "partials/topbar.twig" %}
+	      		{% block topbar %}
+	        		{{ parent() }}   
+	      		{% endblock topbar %}
+  					
+  				</div>
+  				
+  			</div>
+  			
+  			{% use "partials/navbar.twig" %}
+	      {% block navbar %}
+	        {{ parent() }}   
+	      {% endblock navbar %}
+  			
+  		</header>
+  		{% endblock header %}
+  	
+  		{% block section %}
+  		<section>
+
+				{% block content %}
+				<div id="content">
+				
+					{% use "partials/breadcrumb.twig" %}
+	     		{% block breadcrumb %}
+	        	{{ parent() }}   
+	      	{% endblock breadcrumb %}
+	      	
+	      	{% use "partials/titlebar.twig" %}
+	     		{% block titlebar %}
+	        	{{ parent() }}   
+	      	{% endblock titlebar %}
+	      	
+	      	{% if app.session.flashbag %}
+	        	{% include "partials/flash.twig" %}
+	        {% endif %}
+  		
+					{% block main %}
+		      {% endblock main %}
+	        		
+	  		</div>
+	  		{% endblock content %}
+
+  		</section>
+  		{% endblock section %}
+  		
+  		{% block footer %}
+  		<hr>
+  		
+  		<footer>
+  		
+  			<div class="row">
+  			
+  			  <div id="footer-right" class="col-md-6 col-md-push-6 small text-muted">
+  					<p>{{ app.config_app_name }} v.{{ app.config_app_version }}</p>
+  				</div>
+  			
+  				{% set mailto %}<a href="mailto:{{ app.config_credits_email }}">{{ app.config_credits_email }}</a>{% endset %}
+  				{% set mailto_pec %}<a href="mailto:{{ app.config_credits_pec }}">{{ app.config_credits_pec }}</a>{% endset %}
+  			
+  				<div id="footer-left" class="col-md-6 col-md-pull-6 small text-muted">
+  					<address>
+  					© {{ 'now'|date('Y') }} <a href="{{ app.config_credits_url }}" title="{{ app.config_credits_title|e }}" target="_blank">{{ app.config_credits_name }}</a><br>
+  					{{ app.config_credits_address }}, {{ app.config_credits_street_number }} - {{ app.config_credits_postcode }} {{ app.config_credits_city }} {{ app.config_credits_district }} - {{ app.config_credits_state }}<br>
+	  				p.iva_ {{ app.config_credits_vat }} <i class="fa fa-code"></i> REA_ {{ app.config_credits_rea }}<br>
+	  				tel & fax_ <a href="tel:{{ tel(app.config_credits_tel)|e }}">{{ app.config_credits_tel }}</a> <i class="fa fa-code"></i> pec_ <script>document.write('{{ mailto_pec|rot13|raw }}'.rot13())</script> <i class="fa fa-code"></i> email_ <script>document.write('{{ mailto|rot13|raw }}'.rot13())</script>
+	  				</address>
+  				</div>
+  				
+  			</div>
+  			
+  		</footer>
+  		{% endblock footer %}
+  		
+  	</div>
+		{% endblock container %} 
+		
+		{% use "partials/modal.twig" %}
+	  {% block modal %}
+	  	{{ parent() }}   
+	  {% endblock modal %}
+
+    {% use "partials/javascripts_bottom.twig" %}
+		{% block javascripts_bottom %}
+			{{ parent() }}
+    {% endblock javascripts_bottom %}
+
+		{# if not app.debug %}
+		<div class="hidden">
+			<script src="//static.ewake.it/tracking/{{ app.config_analytics }}.js"></script>
+		</div>
+		{% endif #}
+		
+  </body>
+</html>

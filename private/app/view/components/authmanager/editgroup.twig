@@ -1,0 +1,31 @@
+{% extends "layout.twig" %}
+
+{% block main %}
+	<form class="form-horizontal" method="post" action="{{ current_path }}" autocomplete="off">
+	  <div class="form-group">
+	    <label for="groupname" class="col-sm-2 control-label">{{ 'Group Name'|trans }}</label>
+	    <div class="col-sm-5">
+	      <input type="hidden" id="groupname" name="groupname" value="{{ groupname|e }}">
+	      <p class="form-control-static">{{ groupname }}</p>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	   	<label for="users" class="col-sm-2 control-label">{{ 'Users'|trans }}</label>
+	    <div class="col-sm-10">
+	    	{% if users|length > app.config_phphttp_excludedUsernames|length %}
+		    	{% for key,value in users if key not in app.config_phphttp_excludedUsernames %}	
+						<label class="checkbox-inline">
+							<input type="checkbox" id="users" name="users[]" value="{{ key|e }}"{% if key in groupUsers %} checked="checked"{% endif %}> {{ key }}
+						</label>
+		    	{% endfor %}
+		    {% endif %}
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-5">
+	      <button type="submit" class="btn btn-primary">{{ 'Submit'|trans }}</button>
+	      <a href="{{ path('component', {'_locale': app.locale, 'slug': 'authmanager'}) }}" class="btn btn-link">&crarr; {{ 'Back'|trans }}</a>
+	    </div>
+	  </div>
+	</form>
+{% endblock main %}

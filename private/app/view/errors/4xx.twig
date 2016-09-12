@@ -1,0 +1,9 @@
+{% extends "layout.twig" %}
+
+{% set title %}{{ app.translator.trans('Error %code%', {'%code%': code}) }}{% endset %}
+
+{% set breadcrumb = breadcrumb|merge([ { 'label': title } ]) %}
+
+{% block main %}
+	{{ 'An error occurred on the client.'|trans }}
+{% endblock %}

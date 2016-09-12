@@ -1,0 +1,23 @@
+{% extends "layout.twig" %}
+{% from "macros/bootstrap.twig" import alert as alert %}
+
+{% block main %}
+	{% set message %}
+		{% trans %}Warning: use these commands only if you know what you're doing.{% endtrans %}
+		
+		{% trans %}It is recommended to turn off the SSH server via Webmin at each cloud restart.{% endtrans %}
+	{% endset %}
+	{{ alert( message|nl2br, 'warning') }}
+
+	<form class="form-horizontal" method="post" action="{{ current_path }}" autocomplete="off">
+		<input type="hidden" name="action" value="reboot">
+	  <button type="submit" data-text="{{ app.translator.trans('Are you sure you want to reboot the server?')|e }}" class="btn btn-primary modal-confirm"><i class="fa fa-repeat"></i> {{ 'Reboot'|trans }}</button>
+	</form>
+
+	<br>
+	
+	<form class="form-horizontal" method="post" action="{{ current_path }}" autocomplete="off">
+		<input type="hidden" name="action" value="shutdown">
+	  <button type="submit" data-text="{{ app.translator.trans('Are you sure you want to shutdown the server?')|e }}" class="btn btn-primary modal-confirm"><i class="fa fa-power-off"></i> {{ 'Shutdown'|trans }}</button>
+	</form>
+{% endblock main %}

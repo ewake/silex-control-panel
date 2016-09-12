@@ -1,0 +1,18 @@
+{% block titlebar %}
+<div class="row titlebar">
+	<div class="col-sm-{% if actions is defined %}6{% else %}12{% endif %}">
+		{% if title is defined %}
+			<h2>{{ title }}{% if sub_title is defined %} <small>{{ sub_title }}</small>{% endif %}</h2>			
+		{% endif %}
+	</div>
+	{% if actions is defined %}
+		<div class="col-sm-6 actions">
+			{% if actions|length > 0 %}
+				{% for key,value in actions %}	
+					<a class="btn btn-default btn-sm" role="button" href="{{ path(value.route_name, value.route_params) }}"><i class="{{ value.icon_class }}"></i> {{ value.label }}</a></li>	
+				{% endfor %} 
+			{% endif %}
+		</div>
+	{% endif %}	
+</div>
+{% endblock titlebar %}

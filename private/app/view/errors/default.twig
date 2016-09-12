@@ -1,0 +1,11 @@
+{% extends "layout.twig" %}
+
+{% set title %}
+	{% trans %}Error {{ code }}{% endtrans %}
+{% endset %}
+
+{% set breadcrumb = breadcrumb|merge([ { 'title': title } ]) %}
+
+{% block main %}
+	{{ 'An error occurred.'|trans }}
+{% endblock %}

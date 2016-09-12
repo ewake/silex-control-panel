@@ -1,0 +1,17 @@
+{% from "macros/bootstrap.twig" import alert as alert %}
+
+{% for message in app.session.flashbag.get('success') %}
+	{{ alert(message|nl2br, 'success', 'dismissible') }}	
+{% endfor %}
+
+{% for message in app.session.flashbag.get('info') %}
+	{{ alert(message|nl2br, 'info', 'dismissible') }}
+{% endfor %}
+
+{% for message in app.session.flashbag.get('warning') %}
+	{{ alert(message|nl2br, 'warning', 'dismissible') }}
+{% endfor %}
+
+{% for message in app.session.flashbag.get('danger') %}
+	{{ alert(message|nl2br, 'danger', 'dismissible') }}
+{% endfor %}

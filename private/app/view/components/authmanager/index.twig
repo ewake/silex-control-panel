@@ -1,0 +1,89 @@
+{% extends "layout.twig" %}
+
+{% block main %}
+	<div class="row">
+	
+		<div class="col-md-6 col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-user"></i> {{ 'Users'|trans }}
+				</div>
+        <div class="panel-body">
+					{% if users|length > app.config_phphttp_excludedUsernames|length %}
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover table-condensed">
+		            <thead>
+			            <tr>
+				            <th>{{ 'Username'|trans }}</th>
+				            <th>{{ 'Groups'|trans }}</th>
+				            <th>{{ 'Actions'|trans }}</th>
+			            </tr>
+		            </thead>
+		            <tbody>
+									{% for key,value in users if value.username not in app.config_phphttp_excludedUsernames %}	
+										<tr>
+		                  <th>{{ value.username }}</th>
+		                  <th>{{ value.groups|join(', ') }}</th>
+		                  <th>
+			                  <a href="{{ path('component', {'_locale': app.locale, 'slug': 'authmanager', 'action': 'edituser', 'action_id': value.username}) }}" class="btn btn-default btn-xs">
+			                  	<i class="fa fa-pencil"></i>
+			                  </a>
+			                  <a href="{{ path('component', {'_locale': app.locale, 'slug': 'authmanager', 'action': 'deleteuser', 'action_id': value.username}) }}" data-text="{{ app.translator.trans('Are you sure you want to delete user "%name%"?', {'%name%': value.username})|e }}" class="btn btn-danger btn-xs modal-confirm">
+			                  	<i class="fa fa-times"></i>
+			                  </a>
+		                  </th>
+	                  </tr>
+									{% endfor %} 
+								</tbody>
+							</table>
+						</div>
+					{% else %}
+						<p>{{ 'No results found.'|trans }}</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-6 col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-group"></i> {{ 'Groups'|trans }}
+				</div>
+        <div class="panel-body">
+					{% if groups|length > app.config_phphttp_excludedGroupnames|length %}
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover table-condensed">
+		            <thead>
+			            <tr>
+				            <th>{{ 'Groups'|trans }}</th>
+				            <th>{{ 'Members'|trans }}</th>
+				            <th>{{ 'Actions'|trans }}</th>
+			            </tr>
+		            </thead>
+		            <tbody>
+									{% for key,value in groups if key not in app.config_phphttp_excludedGroupnames %}	
+										<tr>
+		                  <th>{{ key }}</th>
+		                  <th>{{ value|join(', ') }}</th>
+		                  <th>
+			                  <a href="{{ path('component', {'_locale': app.locale, 'slug': 'authmanager', 'action': 'editgroup', 'action_id': key}) }}" class="btn btn-default btn-xs">
+			                  	<i class="fa fa-pencil"></i>
+			                  </a>
+			                  <a href="{{ path('component', {'_locale': app.locale, 'slug': 'authmanager', 'action': 'deletegroup', 'action_id': key}) }}" data-text="{{ app.translator.trans('Are you sure you want to delete group "%name%"?', {'%name%': key})|e }}" class="btn btn-danger btn-xs modal-confirm">
+			                  	<i class="fa fa-times"></i>
+			                  </a>
+		                  </th>
+	                  </tr>
+									{% endfor %} 
+								</tbody>
+							</table>
+						</div>
+					{% else %}
+						<p>{{ 'No results found.'|trans }}</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		
+	</div>
+{% endblock main %}

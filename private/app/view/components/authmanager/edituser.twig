@@ -1,0 +1,38 @@
+{% extends "layout.twig" %}
+
+{% block main %}
+	<form class="form-horizontal" method="post" action="{{ current_path }}" autocomplete="off">
+	  <div class="form-group">
+	    <label for="username" class="col-sm-2 control-label">{{ 'Username'|trans }}</label>
+	    <div class="col-sm-5">
+	      <input type="hidden" id="username" name="username" value="{{ username|e }}">
+	      <p class="form-control-static">{{ username }}</p>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="password" class="col-sm-2 control-label">{{ 'Password'|trans }}</label>
+	    <div class="col-sm-5">
+	      <input type="password" class="form-control" id="password" name="password" placeholder="{{ 'Password'|trans|e }}" pattern=".{% verbatim %}{{% endverbatim %}{{ app.config_phphttp_minPassword }},}">
+	      <p class="help-block small">{{ app.translator.trans('Min %n% characters', {'%n%': app.config_phphttp_minPassword}) }}</p>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	   	<label for="groups" class="col-sm-2 control-label">{{ 'Groups'|trans }}</label>
+	    <div class="col-sm-10">
+	    	{% if groups|length > app.config_phphttp_excludedGroupnames|length %}
+		    	{% for key,value in groups if key not in app.config_phphttp_excludedGroupnames %}	
+						<label class="checkbox-inline">
+							<input type="checkbox" id="groups" name="groups[]" value="{{ key|e }}"{% if key in userGroups %} checked="checked"{% endif %}> {{ key }}
+						</label>
+		    	{% endfor %}
+		    {% endif %}
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-5">
+	      <button type="submit" class="btn btn-primary">{{ 'Submit'|trans }}</button>
+	      <a href="{{ path('component', {'_locale': app.locale, 'slug': 'authmanager'}) }}" class="btn btn-link">&crarr; {{ 'Back'|trans }}</a>
+	    </div>
+	  </div>
+	</form>
+{% endblock main %}

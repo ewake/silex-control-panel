@@ -1,0 +1,22 @@
+{# bootstrap specific macros#}
+{% macro alert(message, type, dismissible, style) %}	
+	{% if message != '' %}
+		<div class="alert alert-{{ type|default('success') }} alert-{{ dismissible|default('') }} alert-block">
+			{% if dismissible %}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{% endif %}
+			<span style="{{ style|default('font-weight: bold;') }}">
+			{{ message|raw }}
+			</span>
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro label(message, type) %}
+	{% if message == '' %}
+	{% else %}
+	<span class="label label-{{ type }}">{{ message }}</span>
+	{% endif %}
+{% endmacro %}
+
+{% macro btn(message, type, attributes, element, size) %}
+	<{{ element }} class="btn btn-{{ size }} btn-{{ type }}" {{ attributes|default('') }}>{{ message }}</{{ element }}>
+{% endmacro %}
